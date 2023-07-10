@@ -1,21 +1,14 @@
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
 import { AppState, BinaryFiles, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
-import {
-  WidgetLocation,
-  renderWidget,
-  usePlugin,
-  useRunAsync,
-  useSyncedStorageState,
-} from '@remnote/plugin-sdk';
+import { renderWidget, useSyncedStorageState } from '@remnote/plugin-sdk';
 import debounce from 'debounce';
-import { useCallback, useEffect, useRef, useState, memo, ComponentProps } from 'react';
-import { useRemId } from '../hooks';
+import deepEqual from 'deep-equal';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { RenderIfRemId } from '../components';
 
 const ExcalidrawMemo = memo(({ remId }: { remId?: string }) => {
   const [initialValue, setSyncedValue] = useStoredData(remId);
-  console.log('initialValue: ', initialValue);
 
   const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
 
@@ -23,7 +16,6 @@ const ExcalidrawMemo = memo(({ remId }: { remId?: string }) => {
 
   const handleChange = useCallback(
     debounce((elements: readonly ExcalidrawElement[], appState: AppState, file: BinaryFiles) => {
-      console.log('save to', elements);
       setSyncedValue({ elements, appState });
     }, 500),
     []
@@ -36,11 +28,12 @@ const ExcalidrawMemo = memo(({ remId }: { remId?: string }) => {
   }, [initialValue]);
 
   return <Excalidraw onChange={handleChange} initialData={initialValue} ref={setRef} />;
-});
+}, deepEqual);
 
 type ExcalidrawData = {
   elements: readonly ExcalidrawElement[];
   appState: AppState;
+  scrollToContent?: boolean;
 };
 
 const useStoredData = (
@@ -54,22 +47,16 @@ const useStoredData = (
     null
   );
 
-  console.log('syncedValue: ', syncedValue);
-
   useEffect(() => {
-    if (remId && syncedValue?.elements.length) {
-      console.log('set syncedValue: ', syncedValue);
-      ref.current = syncedValue;
+    if (remId && syncedValue?.elements.length && !ref.current) {
+      ref.current = { ...syncedValue, scrollToContent: true };
     }
   }, [remId, syncedValue]);
 
-  console.log('return stored data: ', ref.current);
   return [ref.current, setSyncedValue];
 };
 
 export const ExcalidrawWidget = () => {
-  // console.log('syncedValue: ');
-
   return (
     <div className="p-2 m-2 rounded-lg rn-clr-background-light-positive rn-clr-content-positive">
       <div style={{ height: '500px' }}>

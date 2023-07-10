@@ -3,6 +3,7 @@ This plugin allows you to embed an Excalidraw board in RemNote. You can create E
 
 ## 📝 TODO
 - [ ] `Known issue` 🚨: Excalidraw Library are currently not supported. The page will be redirected to localhost:8000, so the Library cannot be added to the board.
+- [ ] `Known issue` 🚨: Image data is broken after restore.
 - [ ] `MVP` Design the UI to remove board & Set mode config.
 - [ ] `MVP` Enhance configuration: Add support for themes, height, view mode, zen mode etc. ⚙️
 - [ ] `MVP` Implement full-screen mode support. 🖥️

@@ -1,42 +1,31 @@
 import { declareIndexPlugin, ReactRNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
 import '../style.css';
 import '../App.css';
+import { EMBED_EXCALIDRAW_POWERUP } from '../constants';
 
 async function onActivate(plugin: ReactRNPlugin) {
-  // Register settings
-  await plugin.settings.registerStringSetting({
-    id: 'name',
-    title: 'What is your Name?',
-    defaultValue: 'Bob',
-  });
-
-  await plugin.settings.registerBooleanSetting({
-    id: 'pizza',
-    title: 'Do you like pizza?',
-    defaultValue: true,
-  });
-
-  await plugin.settings.registerNumberSetting({
-    id: 'favorite-number',
-    title: 'What is your favorite number?',
-    defaultValue: 42,
-  });
-
-  // A command that inserts text into the editor if focused.
   await plugin.app.registerCommand({
-    id: 'editor-command',
-    name: 'Editor Command',
+    id: 'excalidraw',
+    name: 'Excalidraw',
     action: async () => {
-      plugin.editor.insertPlainText('Hello World!');
+      const rem = await plugin.focus.getFocusedRem();
+      await rem?.addPowerup(EMBED_EXCALIDRAW_POWERUP);
     },
   });
 
-  // Show a toast notification to the user.
-  await plugin.app.toast("I'm a toast!");
+  await plugin.app.registerPowerup(
+    'EmbedExcalidraw',
+    EMBED_EXCALIDRAW_POWERUP,
+    'Embed Excalidraw into RemNote',
+    {
+      slots: [{ code: 'data', name: 'data' }],
+    }
+  );
 
   // Register a sidebar widget.
-  await plugin.app.registerWidget('sample_widget', WidgetLocation.RightSidebar, {
+  await plugin.app.registerWidget('excalidraw_widget', WidgetLocation.UnderRemEditor, {
     dimensions: { height: 'auto', width: '100%' },
+    powerupFilter: EMBED_EXCALIDRAW_POWERUP,
   });
 }
 

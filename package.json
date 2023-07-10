@@ -9,12 +9,15 @@
     "build": "npx remnote-plugin validate && shx rm -rf dist && cross-env NODE_ENV=production webpack --color --progress && shx cp README.md dist && cd dist && bestzip ../PluginZip.zip ./*"
   },
   "dependencies": {
+    "@excalidraw/excalidraw": "^0.15.2",
     "@remnote/plugin-sdk": "^0.0.18",
+    "debounce": "^1.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+    "@types/debounce": "^1.2.1",
     "@types/node": "^18.0.3",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.2",

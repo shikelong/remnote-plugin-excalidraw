@@ -1,9 +1,9 @@
 {
   "manifestVersion": 1,
-  "id": "plugin_template",
-  "name": "Plugin Template",
-  "author": "remnote",
-  "repoUrl": "",
+  "id": "embed_excalidraw_plugin",
+  "name": "Excalidraw",
+  "author": "KelongShi",
+  "repoUrl": "https://github.com/shikelong/remnote-plugin-excalidraw",
   "version": {
     "major": 0,
     "minor": 0,
@@ -11,12 +11,12 @@
   },
   "theme": [],
   "enableOnMobile": false,
-  "description": "",
+  "description": "support excalidraw integration",
   "requestNative": false,
   "requiredScopes": [
     {
       "type": "All",
-      "level": "Read"
+      "level": "ReadCreateModify"
     }
   ]
 }

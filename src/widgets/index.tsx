@@ -1,7 +1,7 @@
 import { declareIndexPlugin, ReactRNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
 import '../style.css';
 import '../App.css';
-import { EMBED_EXCALIDRAW_POWERUP } from '../constants';
+import { EMBED_EXCALIDRAW_POWERUP, SETTING_IDs } from '../constants';
 
 async function onActivate(plugin: ReactRNPlugin) {
   await plugin.app.registerCommand({
@@ -22,7 +22,17 @@ async function onActivate(plugin: ReactRNPlugin) {
     }
   );
 
-  // Register a sidebar widget.
+  await plugin.settings.registerDropdownSetting({
+    id: SETTING_IDs.theme,
+    title: 'Theme',
+    options: [
+      { key: '1', value: 'auto', label: 'Auto' },
+      { key: '2', value: 'light', label: 'Light' },
+      { key: '3', value: 'dark', label: 'Dark' },
+    ],
+    defaultValue: 'auto',
+  });
+
   await plugin.app.registerWidget('excalidraw_widget', WidgetLocation.UnderRemEditor, {
     dimensions: { height: 'auto', width: '100%' },
     powerupFilter: EMBED_EXCALIDRAW_POWERUP,

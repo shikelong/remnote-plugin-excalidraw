@@ -4,8 +4,10 @@ import { AppState, BinaryFiles, ExcalidrawImperativeAPI } from '@excalidraw/exca
 import debounce from 'debounce';
 import deepEqual from 'deep-equal';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { useStoredData } from '../hooks';
+import { usePreferTheme, useStoredData } from '../hooks';
 import { ExcalidrawMainMenu } from './ExcalidrawMainMenu';
+import { SETTING_IDs, THEME_SETTING } from '../constants';
+import { useTracker } from '@remnote/plugin-sdk';
 
 export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
   const [initialValue, setSyncedValue] = useStoredData(remId);
@@ -13,6 +15,18 @@ export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
   const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | undefined>(
     undefined
   );
+
+  const preferRemNoteTheme = usePreferTheme();
+
+  const useSettingTheme = useTracker<THEME_SETTING>(
+    async (reactivePlugin) => await reactivePlugin.settings.getSetting(SETTING_IDs.theme),
+    []
+  );
+
+  const theme =
+    useSettingTheme === 'auto' || useSettingTheme === undefined
+      ? preferRemNoteTheme
+      : useSettingTheme;
 
   const setRef = useCallback((api: ExcalidrawImperativeAPI) => setExcalidrawAPI(api), []);
 
@@ -30,7 +44,7 @@ export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
   }, [initialValue]);
 
   return (
-    <Excalidraw onChange={handleChange} initialData={initialValue} ref={setRef}>
+    <Excalidraw onChange={handleChange} initialData={initialValue} ref={setRef} theme={theme}>
       <WelcomeScreen />
       <ExcalidrawMainMenu excalidrawAPI={excalidrawAPI} />
     </Excalidraw>

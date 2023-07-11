@@ -28,17 +28,7 @@ export const ExcalidrawMainMenu = ({
       <MainMenu.Separator></MainMenu.Separator>
       <MainMenu.Group>
         <MainMenu.DefaultItems.ToggleTheme />
-        <MainMenu.Item
-          onSelect={handleToggleViewMode}
-          icon={
-            <img
-              className={viewModeEnabled ? '-ml-1' : '-ml-1.5'}
-              src={`${plugin.rootURL}${viewModeEnabled ? 'edit' : 'view'}.svg`}
-              height={viewModeEnabled ? 16 : 20}
-              width={viewModeEnabled ? 16 : 20}
-            />
-          }
-        >
+        <MainMenu.Item onSelect={handleToggleViewMode} style={{ paddingLeft: '1.8em' }}>
           {viewModeEnabled ? 'Edit' : 'View'} mode
         </MainMenu.Item>
         <MainMenu.DefaultItems.ChangeCanvasBackground />

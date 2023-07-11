@@ -1,7 +1,7 @@
 import { declareIndexPlugin, ReactRNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
 import '../style.css';
 import '../App.css';
-import { EMBED_EXCALIDRAW_POWERUP, SETTING_IDs } from '../constants';
+import { CONTAINER_HEIGHT_VALIDATOR, EMBED_EXCALIDRAW_POWERUP, SETTING_IDs } from '../constants';
 
 async function onActivate(plugin: ReactRNPlugin) {
   await plugin.app.registerCommand({
@@ -31,6 +31,13 @@ async function onActivate(plugin: ReactRNPlugin) {
       { key: '3', value: 'dark', label: 'Dark' },
     ],
     defaultValue: 'auto',
+  });
+
+  await plugin.settings.registerNumberSetting({
+    id: SETTING_IDs.height,
+    title: 'Height',
+    description: `Set the height of the Excalidraw board. Valid values range from ${CONTAINER_HEIGHT_VALIDATOR.min} to ${CONTAINER_HEIGHT_VALIDATOR.max}.`,
+    defaultValue: CONTAINER_HEIGHT_VALIDATOR.default,
   });
 
   await plugin.app.registerWidget('excalidraw_widget', WidgetLocation.UnderRemEditor, {

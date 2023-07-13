@@ -1,20 +1,22 @@
 import { MainMenu } from '@excalidraw/excalidraw';
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
 import { usePlugin } from '@remnote/plugin-sdk';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 export const ExcalidrawMainMenu = ({
   excalidrawAPI,
 }: {
   excalidrawAPI?: ExcalidrawImperativeAPI;
 }) => {
-  const plugin = usePlugin();
-  const viewModeEnabled = excalidrawAPI?.getAppState()?.viewModeEnabled;
+  const [viewModeEnabled, setViewModeEnabled] = useState(
+    () => excalidrawAPI?.getAppState()?.viewModeEnabled
+  );
 
   const handleToggleViewMode = useCallback(() => {
     excalidrawAPI?.updateScene({
       appState: { viewModeEnabled: !viewModeEnabled },
     });
+    setViewModeEnabled((v) => !v);
   }, [viewModeEnabled, excalidrawAPI]);
 
   return (

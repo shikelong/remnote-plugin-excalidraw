@@ -1,19 +1,20 @@
-## 📌 Embed Excalidraw Plugin
-This plugin allows you to embed an Excalidraw board in RemNote. You can create Excalidraw drawings directly in RemNote. The board's elements and state are stored as user-level data in RemNote, enabling synchronization and restoration across different devices and platforms. 🔄
+# 🎨 Embed Excalidraw Plugin for RemNote
 
-## Usage
+The Embed Excalidraw plugin lets you seamlessly integrate an Excalidraw board into your RemNote workspace. Now, creating Excalidraw illustrations right within RemNote becomes a breeze! 🖌️ What's more? All board elements and state are stored at the user-level in RemNote, ensuring effortless synchronization and restoration across various devices and platforms. 🔄
 
- 1. type splash command `/excalidraw` to create a new excalidraw board in RemNote.
- 2. drawing!
- 3. you can also *import `.excalidraw` file* by using the `Open` menu in left area.
- 4. other features like `export`, `view mode`, `save to image` also supported, unfunately, custom libary feature not support yet.
-   
+## 🚀 Usage
+
+1. To create a new Excalidraw board in RemNote, simply type the slash command `/excalidraw`.
+2. Let your creativity take over! Start drawing! 🎨
+3. Have an existing `.excalidraw` file? Import it easily using the `Open` menu in the left area. 📁
+4. This plugin also supports features such as `export`, `view mode`, and `save to image`. Unfortunately, the custom library feature is not yet supported. 🗂️
 
 ## 📝 TODO
-- [ ] `Known issue` 🚨: Excalidraw Library are currently not supported. The page will be redirected to localhost:8000, so the Library cannot be added to the board.
-- [ ] `Known issue` 🚨: Image data is broken after restore. (Reason: UpdateScene don't set files. )
+
+- [ ] `Known issue` 🚨: Excalidraw Library is currently not supported. The page will be redirected to localhost:8000, so the Library cannot be added to the board.
 - [ ] `Fast Follow` Implement full-screen mode support. 🖥️
 - [ ] `Need Spike`,`Fast Follow` Enable embedding of existing Excalidraw boards. 🖼️
+- [ ] `Fast Follow` Use slot to customize board's height.
 
-## Contribution
-Feel free to folk this repo and create PRs. thanks!
+## 🤝 Contribution
+Contributions are always welcome! Feel free to fork this repo and create PRs. Thanks! 👍

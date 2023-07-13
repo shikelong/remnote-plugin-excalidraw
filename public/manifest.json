@@ -3,11 +3,12 @@
   "id": "embed_excalidraw_plugin",
   "name": "Excalidraw",
   "author": "KelongShi",
+  "email": "578622705@qq.com",
   "repoUrl": "https://github.com/shikelong/remnote-plugin-excalidraw",
   "version": {
-    "major": 0,
+    "major": 1,
     "minor": 0,
-    "patch": 1
+    "patch": 0
   },
   "theme": [],
   "enableOnMobile": false,

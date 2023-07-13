@@ -18,7 +18,7 @@ async function onActivate(plugin: ReactRNPlugin) {
     EMBED_EXCALIDRAW_POWERUP,
     'Embed Excalidraw into RemNote',
     {
-      slots: [{ code: 'data', name: 'data' }],
+      slots: [{ code: 'data', name: 'data', hidden: true, onlyProgrammaticModifying: true }],
     }
   );
 

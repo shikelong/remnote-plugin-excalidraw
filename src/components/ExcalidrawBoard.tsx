@@ -33,7 +33,13 @@ export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
   }, [initialValue]);
 
   return (
-    <div style={{ height: containerHeight }}>
+    <div
+      style={{
+        height: containerHeight,
+        borderColor: '#ddd',
+      }}
+      className="border border-solid"
+    >
       <Excalidraw onChange={handleChange} initialData={initialValue} ref={setRef} theme={theme}>
         <WelcomeScreen />
         <ExcalidrawMainMenu excalidrawAPI={excalidrawAPI} />

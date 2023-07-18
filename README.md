@@ -11,13 +11,19 @@ The Embed Excalidraw plugin lets you seamlessly integrate an Excalidraw board in
 4. This plugin also supports features such as `export`, `view mode`, and `save to image`.
 5. How to add libraries: you can download libraries file then click on `Open` button in library sidebar to import it to the excalidraw component.
    - **Note:** you can't add excalidraw libs to this plugin by clicking `Add to Excalidraw` button on `https:libraries.excalidraw.com/` now.
-     
+
+## Options 🛠️
+   1. Set the theme in the Plugin Settings.
+   2. Set the height in the Plugin Settings. This value will be applied as the default height for all Excalidraw boards.
+      - The height should be within the range of 450px ~ 1300px.
+   3. Set the height of each board individually by manually editing the height slot/attribute value of the `EmbedExcalidraw` power-up.
+      - The height should be within the range of 450px ~ 1300px.
+      
 
 ## 📝 TODO
 
 - [ ] `Fast Follow` Implement full-screen mode support. 🖥️
 - [ ] `Need Spike`,`Fast Follow` Enable embedding of existing Excalidraw boards. 🖼️
-- [ ] `Fast Follow` Use slot to customize board's height.
 - [ ] `Known issue` 🚨: `Add to Excalidraw` button not works now. The page will be redirected to localhost:8000, so the Library cannot be added to the board.
 
 ## 🤝 Contribution

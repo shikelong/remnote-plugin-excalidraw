@@ -4,8 +4,7 @@ import { AppState, BinaryFiles, ExcalidrawImperativeAPI } from '@excalidraw/exca
 import debounce from 'debounce';
 import deepEqual from 'deep-equal';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { usePersistentData } from '../hooks';
-import { useOptions } from '../hooks/useOptions';
+import { useCustomHeight, useOptions, usePersistentData } from '../hooks';
 import { ExcalidrawMainMenu } from './ExcalidrawMainMenu';
 
 export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
@@ -15,7 +14,8 @@ export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
     undefined
   );
 
-  const { theme, containerHeight } = useOptions();
+  const { theme } = useOptions();
+  const { height, isLoading: isHeightLoading } = useCustomHeight(remId);
 
   const setRef = useCallback((api: ExcalidrawImperativeAPI) => setExcalidrawAPI(api), []);
 
@@ -26,11 +26,16 @@ export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
     []
   );
 
+  if (isHeightLoading) {
+    return null;
+  }
+
   return (
     <div
       style={{
-        height: containerHeight,
+        height,
         borderColor: '#ddd',
+        transition: 'height 0.6s ease-in-out',
       }}
       className="border border-solid"
     >

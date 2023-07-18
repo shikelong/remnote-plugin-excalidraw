@@ -1,4 +1,5 @@
 export const EMBED_EXCALIDRAW_POWERUP = 'embed_excalidraw_powerup';
+export const EMBED_EXCALIDRAW_POWERUP_NAME = 'EmbedExcalidraw';
 
 export const SETTING_IDs = {
   theme: 'excalidraw_theme',
@@ -7,7 +8,7 @@ export const SETTING_IDs = {
 
 export const CONTAINER_HEIGHT_VALIDATOR = {
   min: 450,
-  max: 1000,
+  max: 1300,
   default: 600,
 };
 

@@ -1,7 +1,12 @@
 import { declareIndexPlugin, ReactRNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
 import '../style.css';
 import '../App.css';
-import { CONTAINER_HEIGHT_VALIDATOR, EMBED_EXCALIDRAW_POWERUP, SETTING_IDs } from '../constants';
+import {
+  CONTAINER_HEIGHT_VALIDATOR,
+  EMBED_EXCALIDRAW_POWERUP,
+  EMBED_EXCALIDRAW_POWERUP_NAME,
+  SETTING_IDs,
+} from '../constants';
 
 async function onActivate(plugin: ReactRNPlugin) {
   await plugin.app.registerCommand({
@@ -14,11 +19,14 @@ async function onActivate(plugin: ReactRNPlugin) {
   });
 
   await plugin.app.registerPowerup(
-    'EmbedExcalidraw',
+    EMBED_EXCALIDRAW_POWERUP_NAME,
     EMBED_EXCALIDRAW_POWERUP,
     'Embed Excalidraw into RemNote',
     {
-      slots: [{ code: 'data', name: 'data', hidden: true, onlyProgrammaticModifying: true }],
+      slots: [
+        { code: 'data', name: 'data', hidden: true, onlyProgrammaticModifying: true },
+        { code: 'height', name: 'height', hidden: false, onlyProgrammaticModifying: false },
+      ],
     }
   );
 
@@ -36,7 +44,7 @@ async function onActivate(plugin: ReactRNPlugin) {
   await plugin.settings.registerNumberSetting({
     id: SETTING_IDs.height,
     title: 'Height',
-    description: `Set the height of the Excalidraw board. Valid values range from ${CONTAINER_HEIGHT_VALIDATOR.min} to ${CONTAINER_HEIGHT_VALIDATOR.max}.`,
+    description: `Set the default height of the Excalidraw board. Valid values range from ${CONTAINER_HEIGHT_VALIDATOR.min} to ${CONTAINER_HEIGHT_VALIDATOR.max}, you can also set separated height via the height slot of each ${EMBED_EXCALIDRAW_POWERUP_NAME} powerup`,
     defaultValue: CONTAINER_HEIGHT_VALIDATOR.default,
   });
 

@@ -1,23 +1,44 @@
 import { Excalidraw, WelcomeScreen } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
-import { AppState, BinaryFiles, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { AppState, BinaryFiles } from '@excalidraw/excalidraw/types/types';
 import debounce from 'debounce';
 import deepEqual from 'deep-equal';
-import { memo, useCallback, useEffect, useState } from 'react';
-import { useCustomHeight, useOptions, usePersistentData } from '../hooks';
+import { memo, useCallback } from 'react';
+import { DEFAULT_SLOT_OPTIONS, SLOT_IDs } from '../constants';
+import { useCustomHeight, useOptions, useSlotData } from '../hooks';
+import { ExcalidrawData, SlotOptions } from '../types';
 import { ExcalidrawMainMenu } from './ExcalidrawMainMenu';
 
-export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
-  const [{ initialData, isLoading }, saveData] = usePersistentData(remId);
+const handleStoredExcalidrawData = (storedData: ExcalidrawData) => {
+  //TODO: use a better solution later.
+  // After JSON.parse, the collaborator will be a plain object, causing a 'forEach not defined' error.
+  // To temporarily fix this issue, we rewrite it as a new Map. This is acceptable as the collaboration feature is not yet supported.
+  storedData.appState.collaborators = new Map();
+};
 
-  const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | undefined>(
-    undefined
+export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
+  const [{ data: initialData, isLoading }, saveData] = useSlotData<ExcalidrawData>(
+    SLOT_IDs.data,
+    remId,
+    undefined,
+    handleStoredExcalidrawData
+  );
+  const [{ data: slotOptions }, saveSlotOptions] = useSlotData<SlotOptions>(
+    SLOT_IDs.options,
+    remId,
+    DEFAULT_SLOT_OPTIONS,
+    undefined,
+    true
   );
 
   const { theme } = useOptions();
   const { height, isLoading: isHeightLoading } = useCustomHeight(remId);
 
-  const setRef = useCallback((api: ExcalidrawImperativeAPI) => setExcalidrawAPI(api), []);
+  const onViewModeChanged = useCallback(() => {
+    if (slotOptions) {
+      saveSlotOptions({ ...slotOptions, viewModeEnabled: !slotOptions.viewModeEnabled });
+    }
+  }, [slotOptions, saveSlotOptions]);
 
   const handleChange = useCallback(
     debounce((elements: readonly ExcalidrawElement[], appState: AppState, files: BinaryFiles) => {
@@ -25,6 +46,8 @@ export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
     }, 500),
     []
   );
+
+  const viewModeEnabled = slotOptions?.viewModeEnabled ?? DEFAULT_SLOT_OPTIONS.viewModeEnabled;
 
   if (isHeightLoading) {
     return null;
@@ -40,9 +63,17 @@ export const ExcalidrawBoard = memo(({ remId }: { remId?: string }) => {
       className="border border-solid"
     >
       {!isLoading || initialData ? (
-        <Excalidraw onChange={handleChange} initialData={initialData} ref={setRef} theme={theme}>
+        <Excalidraw
+          onChange={handleChange}
+          initialData={initialData}
+          theme={theme}
+          viewModeEnabled={viewModeEnabled}
+        >
           <WelcomeScreen />
-          <ExcalidrawMainMenu excalidrawAPI={excalidrawAPI} />
+          <ExcalidrawMainMenu
+            onViewModeChanged={onViewModeChanged}
+            viewModeEnabled={viewModeEnabled}
+          />
         </Excalidraw>
       ) : (
         <>loading...</>

@@ -7,3 +7,7 @@ export type ExcalidrawData = {
   files?: BinaryFiles;
   scrollToContent?: boolean;
 };
+
+export type SlotOptions = {
+  viewModeEnabled: boolean;
+};

@@ -1,24 +1,12 @@
 import { MainMenu } from '@excalidraw/excalidraw';
-import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
-import { usePlugin } from '@remnote/plugin-sdk';
-import { useCallback, useState } from 'react';
 
 export const ExcalidrawMainMenu = ({
-  excalidrawAPI,
+  viewModeEnabled,
+  onViewModeChanged,
 }: {
-  excalidrawAPI?: ExcalidrawImperativeAPI;
+  viewModeEnabled: boolean;
+  onViewModeChanged: () => void;
 }) => {
-  const [viewModeEnabled, setViewModeEnabled] = useState(
-    () => excalidrawAPI?.getAppState()?.viewModeEnabled
-  );
-
-  const handleToggleViewMode = useCallback(() => {
-    excalidrawAPI?.updateScene({
-      appState: { viewModeEnabled: !viewModeEnabled },
-    });
-    setViewModeEnabled((v) => !v);
-  }, [viewModeEnabled, excalidrawAPI]);
-
   return (
     <MainMenu>
       <MainMenu.Group>
@@ -30,8 +18,8 @@ export const ExcalidrawMainMenu = ({
       <MainMenu.Separator></MainMenu.Separator>
       <MainMenu.Group>
         <MainMenu.DefaultItems.ToggleTheme />
-        <MainMenu.Item onSelect={handleToggleViewMode} style={{ paddingLeft: '1.8em' }}>
-          {viewModeEnabled ? 'Edit' : 'View'} mode
+        <MainMenu.Item onSelect={onViewModeChanged} style={{ paddingLeft: '1.8em' }}>
+          Switch to {viewModeEnabled ? 'edit' : 'view'} mode
         </MainMenu.Item>
         <MainMenu.DefaultItems.ChangeCanvasBackground />
       </MainMenu.Group>

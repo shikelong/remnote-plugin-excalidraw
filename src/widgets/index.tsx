@@ -6,6 +6,7 @@ import {
   EMBED_EXCALIDRAW_POWERUP,
   EMBED_EXCALIDRAW_POWERUP_NAME,
   SETTING_IDs,
+  SLOT_IDs,
 } from '../constants';
 
 async function onActivate(plugin: ReactRNPlugin) {
@@ -24,8 +25,19 @@ async function onActivate(plugin: ReactRNPlugin) {
     'Embed Excalidraw into RemNote',
     {
       slots: [
-        { code: 'data', name: 'data', hidden: true, onlyProgrammaticModifying: true },
-        { code: 'height', name: 'height', hidden: false, onlyProgrammaticModifying: false },
+        { code: SLOT_IDs.data, name: SLOT_IDs.data, hidden: true, onlyProgrammaticModifying: true },
+        {
+          code: SLOT_IDs.height,
+          name: SLOT_IDs.height,
+          hidden: false,
+          onlyProgrammaticModifying: false,
+        },
+        {
+          code: SLOT_IDs.options,
+          name: SLOT_IDs.options,
+          hidden: true,
+          onlyProgrammaticModifying: true,
+        },
       ],
     }
   );

@@ -11,7 +11,7 @@
     "patch": 2
   },
   "theme": [],
-  "enableOnMobile": false,
+  "enableOnMobile": true,
   "description": "support excalidraw integration",
   "requestNative": false,
   "requiredScopes": [

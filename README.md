@@ -23,7 +23,6 @@ The Embed Excalidraw plugin lets you seamlessly integrate an Excalidraw board in
 ## 📝 TODO
 
 - [ ] `Fast Follow` Implement full-screen mode support. 🖥️
-- [ ] `Need Spike`,`Fast Follow` Enable embedding of existing Excalidraw boards. 🖼️
 - [ ] `Known issue` 🚨: `Add to Excalidraw` button not works now. The page will be redirected to localhost:8000, so the Library cannot be added to the board.
 
 ## 🤝 Contribution

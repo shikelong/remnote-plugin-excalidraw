@@ -19,13 +19,6 @@ The Embed Excalidraw plugin lets you seamlessly integrate an Excalidraw board in
    3. Set the height of each board individually by manually editing the height slot/attribute value of the `EmbedExcalidraw` power-up.
       - The height should be within the range of 450px ~ 1300px.
       
-
-## 📝 TODO
-
-- [ ] `Setting` add global option - `readonly on Mobile`
-- [ ] `Fast Follow` Implement full-screen mode support. 🖥️
-- [ ] `Known issue` 🚨: `Add to Excalidraw` button not works now. The page will be redirected to localhost:8000, so the Library cannot be added to the board.
-
 ## 🤝 Contribution
 Contributions are always welcome! Feel free to fork this repo and create PRs. Thanks! 👍
 

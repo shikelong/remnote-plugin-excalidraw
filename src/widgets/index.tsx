@@ -64,6 +64,14 @@ async function onActivate(plugin: ReactRNPlugin) {
     dimensions: { height: 'auto', width: '100%' },
     powerupFilter: EMBED_EXCALIDRAW_POWERUP,
   });
+
+  //TODO: extract to utils
+  await plugin.app.registerWidget('excalidraw_popup_widget', WidgetLocation.Popup, {
+    dimensions: {
+      height: window.screen.availHeight - 80,
+      width: window.screen.availWidth - 80,
+    },
+  });
 }
 
 async function onDeactivate(_: ReactRNPlugin) {}

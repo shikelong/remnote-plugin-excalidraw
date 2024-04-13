@@ -1,14 +1,16 @@
-import { Excalidraw, WelcomeScreen } from '@excalidraw/excalidraw';
+import { Excalidraw, WelcomeScreen, Button } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
 import { AppState, BinaryFiles } from '@excalidraw/excalidraw/types/types';
 import debounce from 'debounce';
 import deepEqual from 'deep-equal';
-import { memo, useCallback, useState } from 'react';
+import { ComponentProps, memo, useCallback, useMemo, useState } from 'react';
 import { DEFAULT_SLOT_OPTIONS, SLOT_IDs } from '../constants';
 import { useCustomHeight, useOptions, useSlotData } from '../hooks';
 import { ExcalidrawData, SlotOptions } from '../types';
 import { ExcalidrawMainMenu } from './ExcalidrawMainMenu';
 import { usePlugin } from '@remnote/plugin-sdk';
+import CloseModal from './Icons/CloseModal';
+import FullScreen from './Icons/FullScreen';
 
 const handleStoredExcalidrawData = (storedData: ExcalidrawData) => {
   //TODO: use a better solution later.
@@ -18,7 +20,7 @@ const handleStoredExcalidrawData = (storedData: ExcalidrawData) => {
 };
 
 export const ExcalidrawBoard = memo(
-  ({ remId, openInModal }: { remId?: string; openInModal?: boolean }) => {
+  ({ remId, openInModal = false }: { remId?: string; openInModal?: boolean }) => {
     const [{ data: initialData, isLoading }, saveData] = useSlotData<ExcalidrawData>(
       SLOT_IDs.data,
       remId,
@@ -53,16 +55,12 @@ export const ExcalidrawBoard = memo(
 
     const viewModeEnabled = slotOptions?.viewModeEnabled ?? DEFAULT_SLOT_OPTIONS.viewModeEnabled;
 
-    const [isOpenPopup, setIsOpenPopup] = useState(false);
-
     const onPopupModeChanged = async () => {
-      if (isOpenPopup) {
+      if (openInModal) {
         plugin.widget.closePopup();
       } else {
-        plugin.widget.openPopup('excalidraw_popup_widget', { remId, caller: 'test' }, true);
+        plugin.widget.openPopup('excalidraw_popup_widget', { remId }, true);
       }
-
-      setIsOpenPopup((v) => !v);
     };
 
     if (isHeightLoading) {
@@ -83,14 +81,24 @@ export const ExcalidrawBoard = memo(
             onChange={handleChange}
             initialData={initialData}
             theme={theme}
+            renderTopRightUI={() => (
+              <div className="relative top-[2px]">
+                <Button
+                  onSelect={onPopupModeChanged}
+                  title={openInModal ? 'close popup' : 'open in popup'}
+                >
+                  <div className="ToolIcon__icon">
+                    {openInModal ? <CloseModal /> : <FullScreen />}
+                  </div>
+                </Button>
+              </div>
+            )}
             viewModeEnabled={viewModeEnabled}
           >
             <WelcomeScreen />
             <ExcalidrawMainMenu
               onViewModeChanged={onViewModeChanged}
               viewModeEnabled={viewModeEnabled}
-              onPopupModeChanged={onPopupModeChanged}
-              popupModeEnabled={isOpenPopup}
             />
           </Excalidraw>
         ) : (

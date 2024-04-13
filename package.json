@@ -11,7 +11,7 @@
     "test:watch": "npx jest --watch"
   },
   "dependencies": {
-    "@excalidraw/excalidraw": "^0.15.2",
+    "@excalidraw/excalidraw": "^0.16.1",
     "@remnote/plugin-sdk": "^0.0.18",
     "debounce": "^1.2.1",
     "deep-equal": "^2.2.1",

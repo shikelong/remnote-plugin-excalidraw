@@ -1,14 +1,14 @@
-import { Excalidraw, WelcomeScreen, Button } from '@excalidraw/excalidraw';
+import { Button, Excalidraw, WelcomeScreen } from '@excalidraw/excalidraw';
 import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
-import { AppState, BinaryFiles } from '@excalidraw/excalidraw/types/types';
+import { AppState, BinaryFiles, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { useOnMessageBroadcast, usePlugin } from '@remnote/plugin-sdk';
 import debounce from 'debounce';
 import deepEqual from 'deep-equal';
-import { ComponentProps, memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { DEFAULT_SLOT_OPTIONS, SLOT_IDs } from '../constants';
 import { useCustomHeight, useOptions, useSlotData } from '../hooks';
-import { ExcalidrawData, SlotOptions } from '../types';
+import { ExcalidrawData, ModalClosedMessage, SlotOptions } from '../types';
 import { ExcalidrawMainMenu } from './ExcalidrawMainMenu';
-import { usePlugin } from '@remnote/plugin-sdk';
 import CloseModal from './Icons/CloseModal';
 import FullScreen from './Icons/FullScreen';
 
@@ -21,11 +21,12 @@ const handleStoredExcalidrawData = (storedData: ExcalidrawData) => {
 
 export const ExcalidrawBoard = memo(
   ({ remId, openInModal = false }: { remId?: string; openInModal?: boolean }) => {
-    const [{ data: initialData, isLoading }, saveData] = useSlotData<ExcalidrawData>(
+    const [{ data: initialData, isLoading }, saveData, getData] = useSlotData<ExcalidrawData>(
       SLOT_IDs.data,
       remId,
       undefined,
-      handleStoredExcalidrawData
+      handleStoredExcalidrawData,
+      false
     );
     const [{ data: slotOptions }, saveSlotOptions] = useSlotData<SlotOptions>(
       SLOT_IDs.options,
@@ -34,6 +35,8 @@ export const ExcalidrawBoard = memo(
       undefined,
       true
     );
+
+    const [excalidrawApi, setExcalidrawApi] = useState<ExcalidrawImperativeAPI | null>(null);
 
     const plugin = usePlugin();
 
@@ -53,13 +56,33 @@ export const ExcalidrawBoard = memo(
       []
     );
 
+    useOnMessageBroadcast(async (event) => {
+      if (event.message.type === 'ModalClosed') {
+        if ((event.message as ModalClosedMessage).remId === remId) {
+          if (excalidrawApi?.updateScene) {
+            const storedData = await getData();
+
+            excalidrawApi?.updateScene({
+              elements: storedData?.elements,
+              appState: storedData?.appState,
+            });
+          } else {
+            console.error('excalidraw api is not ready');
+          }
+        }
+      }
+    });
+
     const viewModeEnabled = slotOptions?.viewModeEnabled ?? DEFAULT_SLOT_OPTIONS.viewModeEnabled;
 
     const onPopupModeChanged = async () => {
       if (openInModal) {
-        plugin.widget.closePopup();
+        //Force Instance's update / re-render to sync the data between modal instance and main instance.
+        plugin.messaging.broadcast({ remId, type: 'ModalClosed' } as ModalClosedMessage);
+        await plugin.widget.closePopup();
       } else {
-        plugin.widget.openPopup('excalidraw_popup_widget', { remId }, true);
+        //Disable close when clicking outside to make sure we have the chance to broadcast ModalClosedMessage.
+        await plugin.widget.openPopup('excalidraw_popup_widget', { remId }, false);
       }
     };
 
@@ -81,6 +104,7 @@ export const ExcalidrawBoard = memo(
             onChange={handleChange}
             initialData={initialData}
             theme={theme}
+            ref={(api: ExcalidrawImperativeAPI) => setExcalidrawApi(api)}
             renderTopRightUI={() => (
               <div className="relative top-[2px]">
                 <Button

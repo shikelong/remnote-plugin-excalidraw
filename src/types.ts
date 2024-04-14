@@ -11,3 +11,8 @@ export type ExcalidrawData = {
 export type SlotOptions = {
   viewModeEnabled: boolean;
 };
+
+export type ModalClosedMessage = {
+  type: 'ModalClosed';
+  remId: string;
+};

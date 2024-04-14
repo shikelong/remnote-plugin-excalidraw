@@ -13,7 +13,8 @@ export function useSlotData<T>(
     data?: T;
     isLoading: boolean;
   },
-  (data: T) => void
+  (data: T) => void,
+  () => T
 ] {
   const plugin = usePlugin();
   const [data, setData] = useState<T | undefined>();
@@ -39,12 +40,15 @@ export function useSlotData<T>(
     if (handleDataFromSlot && storedData) {
       handleDataFromSlot(storedData);
     }
-    setData(storedData);
-    setLoading(false);
+
+    return storedData;
   }, [remId]);
 
   useEffect(() => {
-    getData();
+    getData().then((storedData) => {
+      setData(storedData);
+      setLoading(false);
+    });
   }, [remId]);
 
   const saveData = useCallback(
@@ -53,12 +57,15 @@ export function useSlotData<T>(
       await rem?.setPowerupProperty(EMBED_EXCALIDRAW_POWERUP, slotId, [JSON.stringify(data)]);
       if (reactive) {
         setTimeout(() => {
-          getData();
+          getData().then((storedData) => {
+            setData(storedData);
+            setLoading(false);
+          });
         }, 100);
       }
     },
     [remId, plugin, reactive]
   );
 
-  return [{ data, isLoading }, saveData];
+  return [{ data, isLoading }, saveData, getData];
 }

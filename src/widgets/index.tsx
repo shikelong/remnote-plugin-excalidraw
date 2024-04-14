@@ -8,6 +8,7 @@ import {
   SETTING_IDs,
   SLOT_IDs,
 } from '../constants';
+import { getPopupDimensions } from '../utils';
 
 async function onActivate(plugin: ReactRNPlugin) {
   await plugin.app.registerCommand({
@@ -63,6 +64,10 @@ async function onActivate(plugin: ReactRNPlugin) {
   await plugin.app.registerWidget('excalidraw_widget', WidgetLocation.UnderRemEditor, {
     dimensions: { height: 'auto', width: '100%' },
     powerupFilter: EMBED_EXCALIDRAW_POWERUP,
+  });
+
+  await plugin.app.registerWidget('excalidraw_popup_widget', WidgetLocation.Popup, {
+    dimensions: getPopupDimensions(),
   });
 }
 

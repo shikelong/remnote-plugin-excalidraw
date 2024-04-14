@@ -6,10 +6,11 @@ The Embed Excalidraw plugin lets you seamlessly integrate an Excalidraw board in
 
 
 1. To create a new Excalidraw board in RemNote, simply type the slash command `/excalidraw`.
-2. Let your creativity take over! Start drawing! 🎨
-3. Have an existing `.excalidraw` file? Import it easily using the `Open` menu in the left area. 📁
-4. This plugin also supports features such as `export`, `view mode`, and `save to image`.
-5. How to add libraries: you can download libraries file then click on `Open` button in library sidebar to import it to the excalidraw component.
+2. Let your creativity take over! Start drawing! 🎨 
+3. You can open the excalidraw board in popup by clicking the button on the top-right area.
+4. Have an existing `.excalidraw` file? Import it easily using the `Open` menu in the left area. 📁
+5. This plugin also supports features such as `export`, `view mode`, and `save to image`.
+6. How to add libraries: you can download libraries file then click on `Open` button in library sidebar to import it to the excalidraw component.
    - **Note:** you can't add excalidraw libs to this plugin by clicking `Add to Excalidraw` button on `https:libraries.excalidraw.com/` now.
 
 ## Options 🛠️
@@ -23,7 +24,6 @@ The Embed Excalidraw plugin lets you seamlessly integrate an Excalidraw board in
 ## 📝 TODO
 
 - [ ] `Setting` add global option - `readonly on Mobile`
-- [ ] `Fast Follow` Implement full-screen mode support. 🖥️
 - [ ] `Known issue` 🚨: `Add to Excalidraw` button not works now. The page will be redirected to localhost:8000, so the Library cannot be added to the board.
 
 ## 🤝 Contribution
